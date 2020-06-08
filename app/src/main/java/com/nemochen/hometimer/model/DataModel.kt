@@ -11,7 +11,7 @@ class DataModel {
     fun retrieveData(dataReadyCallback: onDataReadyCallback) {
         android.os.Handler().postDelayed({
             dataReadyCallback.onDataReady(mutableList)
-        }, 1500)
+        }, 2000)
     }
 
     interface onDataReadyCallback {
