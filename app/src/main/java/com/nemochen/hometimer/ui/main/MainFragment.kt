@@ -8,7 +8,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nemochen.hometimer.databinding.MainFragmentBinding
+import com.nemochen.hometimer.model.CountdownElement
 
 class MainFragment : Fragment() {
 
@@ -20,6 +22,7 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: MainFragmentBinding
     private lateinit var viewModel: MainViewModel
+    private var countdownElementAdapter = CountdownElementAdapter(emptyList())
 
 
     override fun onCreateView(
@@ -27,6 +30,9 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = MainFragmentBinding.inflate(inflater, container, false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.adapter = countdownElementAdapter
+
         return binding.root
     }
 
@@ -36,11 +42,11 @@ class MainFragment : Fragment() {
         binding.viewModel = viewModel
 
         // TODO: Use the ViewModel
+        viewModel.itemList.observe(viewLifecycleOwner, Observer<List<CountdownElement>> {
+            // TODO: update items in countdownElementAdapter
+//            countdownElementAdapter.
 
-        viewModel.displayString.observe(viewLifecycleOwner,
-            Observer {
-                s -> binding.message.text = s
-            })
+        })
         viewModel.toastMessage.observe(viewLifecycleOwner,
             Observer {
                 s -> Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
