@@ -22,7 +22,7 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: MainFragmentBinding
     private lateinit var viewModel: MainViewModel
-    private var countdownElementAdapter = CountdownElementAdapter(emptyList())
+    private var countdownElementAdapter = CountdownElementAdapter()
 
 
     override fun onCreateView(
@@ -44,8 +44,7 @@ class MainFragment : Fragment() {
         // TODO: Use the ViewModel
         viewModel.itemList.observe(viewLifecycleOwner, Observer<List<CountdownElement>> {
             // TODO: update items in countdownElementAdapter
-//            countdownElementAdapter.
-
+            list -> countdownElementAdapter.bindRecyclerViewWithCountdownElementList(binding.recyclerView, list)
         })
         viewModel.toastMessage.observe(viewLifecycleOwner,
             Observer {

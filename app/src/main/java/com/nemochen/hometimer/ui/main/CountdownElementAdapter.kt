@@ -2,13 +2,23 @@ package com.nemochen.hometimer.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nemochen.hometimer.databinding.CountdownElementBinding
 import com.nemochen.hometimer.model.CountdownElement
 
+class CountdownElementAdapter : ListAdapter<CountdownElement, RecyclerView.ViewHolder>(DiffCallback){
 
-class CountdownElementAdapter(private var items: List<CountdownElement>) : RecyclerView.Adapter<CountdownElementAdapter.ViewHolder>(){
+    companion object DiffCallback : DiffUtil.ItemCallback<CountdownElement>() {
+        override fun areItemsTheSame(oldItem: CountdownElement, newItem: CountdownElement): Boolean {
+            return oldItem === newItem
+        }
+        override fun areContentsTheSame(oldItem: CountdownElement, newItem: CountdownElement): Boolean {
+            return (oldItem.name == newItem.name) && (oldItem.endTime == newItem.endTime)
+        }
+    }
 
     class ViewHolder(var binding: CountdownElementBinding): RecyclerView.ViewHolder(binding.root) {
 
@@ -24,13 +34,23 @@ class CountdownElementAdapter(private var items: List<CountdownElement>) : Recyc
         return ViewHolder(countdownElementBinding)
     }
 
-    override fun getItemCount(): Int {
-        return items.size
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ViewHolder -> {
+                holder.bind(getItem(position) as CountdownElement)
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val countdownElement = items[position]
-        holder.bind(countdownElement)
+    @BindingAdapter("countdownElements")
+    fun bindRecyclerViewWithCountdownElementList(recyclerView: RecyclerView, elementList: List<CountdownElement>) {
+        elementList.let {
+            recyclerView.adapter?.apply {
+                when (this) {
+                    is CountdownElementAdapter -> submitList(it)
+                }
+            }
+        }
     }
 
 }
