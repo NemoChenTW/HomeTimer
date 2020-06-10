@@ -40,6 +40,7 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         // TODO: Use the ViewModel
         viewModel.itemList.observe(viewLifecycleOwner, Observer<List<CountdownElement>> {

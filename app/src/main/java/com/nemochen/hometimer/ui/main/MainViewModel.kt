@@ -13,7 +13,7 @@ class MainViewModel : ViewModel() {
         const val DOWNLOAD_COMPLETE = "Download completed"
     }
 
-    var isLoading = ObservableField(false)
+    var isLoading = MutableLiveData(false)
     var toastMessage = SingleLiveEvent<String>()
     var itemList = MutableLiveData<MutableList<CountdownElement>>()
     var displayString = MutableLiveData<String>()
@@ -21,14 +21,13 @@ class MainViewModel : ViewModel() {
     var dataModel = DataModel()
 
     fun getData() {
-
-        isLoading.set(true)
+        isLoading.value = true
         dataModel.retrieveData(object : DataModel.onDataReadyCallback{
             override fun onDataReady(dataList: List<CountdownElement>) {
                 itemList.value = dataList as MutableList<CountdownElement>
                 displayString.value = itemList.value?.get(0)?.name
                 toastMessage.value = DOWNLOAD_COMPLETE
-                isLoading.set(false)
+                isLoading.value = false
             }
         })
     }
