@@ -27,10 +27,21 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{countdownElement.name}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                android:text="@{countdownElement.name}"
+                android:textSize="18sp"
                 tools:text="@tools:sample/cities" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/name"
+                app:layout_constraintRight_toRightOf="parent"
+                android:text="@{countdownElement.displayTimeString}"
+                android:textSize="20sp"
+                tools:text="@tools:sample/date/hhmmss"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

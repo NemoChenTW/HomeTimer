@@ -3,9 +3,10 @@ package com.nemochen.hometimer.model
 class DataModel {
     var mutableList: MutableList<CountdownElement>  = mutableListOf()
     init {
-        mutableList.add(CountdownElement("Water Filter", 1591747200000))   //2020年6月10日星期三 08:00:00 GMT+08:00
-        mutableList.add(CountdownElement("Bath Water Filter", 1591761600000))   //2020年6月10日星期三 12:00:00 GMT+08:00
-        mutableList.add(CountdownElement("Toothbrush", 1591624800000))   //2020年6月8日星期一 22:00:00 GMT+08:00
+        mutableList.add(CountdownElement("Water Filter", System.currentTimeMillis() + 86415 * 1000))
+        mutableList.add(CountdownElement("Bath Water Filter", System.currentTimeMillis() + 3600 * 5 * 1000))
+        mutableList.add(CountdownElement("Toothbrush", System.currentTimeMillis() + 2407 * 1000))
+        mutableList.add(CountdownElement("除濕劑", System.currentTimeMillis() + 30 * 1000))
     }
 
     fun retrieveData(dataReadyCallback: onDataReadyCallback) {
