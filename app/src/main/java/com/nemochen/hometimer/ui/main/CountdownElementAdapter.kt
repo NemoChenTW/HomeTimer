@@ -40,11 +40,10 @@ class CountdownElementAdapter : ListAdapter<CountdownElement, RecyclerView.ViewH
         when (holder) {
             is ViewHolder -> {
                 holder.bind(getItem(position).apply {
-
                     if (this.countDownTimer == null) {
                         this.countDownTimer = object : CountDownTimer(this.endTime - System.currentTimeMillis(), 1000) {
                             override fun onFinish() {
-                                // Do nothing
+                                countDownTimer = null
                             }
 
                             override fun onTick(millisUntilFinished: Long) {
