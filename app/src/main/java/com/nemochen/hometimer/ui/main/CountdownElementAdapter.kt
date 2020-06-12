@@ -58,11 +58,31 @@ class CountdownElementAdapter : ListAdapter<CountdownElement, RecyclerView.ViewH
     }
 
     @BindingAdapter("countdownElements")
-    fun bindRecyclerViewWithCountdownElementList(recyclerView: RecyclerView, elementList: List<CountdownElement>) {
+    fun bindRecyclerViewWithCountdownElementList(recyclerView: RecyclerView, elementList: MutableList<CountdownElement>) {
         elementList.let {
             recyclerView.adapter?.apply {
                 when (this) {
-                    is CountdownElementAdapter -> submitList(it)
+                    is CountdownElementAdapter -> {
+                        submitList(it)
+                        notifyItemRangeChanged(0, it.size)
+                    }
+                }
+            }
+        }
+    }
+
+    fun removeItem(recyclerView: RecyclerView, list: MutableList<CountdownElement>?, position: Int) {
+        list?.let {
+            recyclerView.adapter?.apply {
+                when (this) {
+                    is CountdownElementAdapter -> {
+                        it.removeAt(position).let { removedItem ->
+                            removedItem.countDownTimer?.cancel()
+                            removedItem.countDownTimer = null
+                        }
+                        submitList(it)
+                        notifyItemRemoved(position)
+                    }
                 }
             }
         }
