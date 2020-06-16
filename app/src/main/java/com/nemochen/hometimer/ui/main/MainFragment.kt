@@ -3,6 +3,7 @@ package com.nemochen.hometimer.ui.main
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nemochen.hometimer.databinding.MainFragmentBinding
-import com.nemochen.hometimer.model.CountdownElement
 
 class MainFragment : Fragment() {
 
@@ -54,6 +54,12 @@ class MainFragment : Fragment() {
         }).apply {
             this.attachToRecyclerView(binding.recyclerView)
         }
+
+        binding.btnCreate.setOnClickListener(object : OnClickListener {
+            override fun onClick(v: View?) {
+                ElementDialogFragment().show(parentFragmentManager, ElementDialogFragment.TAG)
+            }
+        })
 
         return binding.root
     }
