@@ -1,14 +1,15 @@
 package com.nemochen.hometimer.ui.main
 
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.DatePicker
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
+import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.nemochen.hometimer.R
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.nemochen.hometimer.databinding.DialogFragmentBinding
+import java.util.*
 
 class ElementDialogFragment : DialogFragment() {
 
@@ -17,30 +18,41 @@ class ElementDialogFragment : DialogFragment() {
         fun newInstance() = ElementDialogFragment()
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        context?.apply {
-            val builder: AlertDialog.Builder = AlertDialog.Builder(this, 0)
-            val v = activity?.layoutInflater?.inflate(R.layout.dialog_fragment, null)
-            v?.findViewById<TextView>(R.id.date)?.setOnClickListener(object : View.OnClickListener {
-                override fun onClick(v: View?) {
-                    DatePickerDialog(this@apply, object : DatePickerDialog.OnDateSetListener{
-                        override fun onDateSet(
-                            view: DatePicker?,
-                            year: Int,
-                            month: Int,
-                            dayOfMonth: Int
-                        ) {
-                            (v as TextView).text = "$year/$month/$dayOfMonth"
-                        }
+    private lateinit var binding: DialogFragmentBinding
+    private lateinit var viewModel: ElementDialogViewModel
 
-                    }, 2020, 6, 17).show()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        binding = DialogFragmentBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(this)[ElementDialogViewModel::class.java]
+        binding.viewModel = viewModel
+
+
+        viewModel.editDateTrigger.observe(viewLifecycleOwner, Observer {
+            context?.apply {
+                if (it != null) {
+                    val calendar = Calendar.getInstance()
+                    DatePickerDialog(this,
+                        DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth -> binding.date.text = "$year/$month/$dayOfMonth" },
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)
+                    ).show()
                 }
+                Calendar.YEAR
+            }
 
-            })
-            builder.setView(v)
-
-            return builder.create()
-        }
-        return super.onCreateDialog(savedInstanceState)
+        })
     }
 }
