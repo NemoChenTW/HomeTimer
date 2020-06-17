@@ -10,6 +10,8 @@ class TimeDisplayUtil {
         const val PADDING_CHAR = '0'
 
         val dataFormater = SimpleDateFormat("yyyy/MM/dd")
+        val timeFormater = SimpleDateFormat("HH:mm:ss")
+        val timeFormaterWithoutSecond = SimpleDateFormat("HH:mm")
         val dataTimeFormater = SimpleDateFormat("yyyy/mm/dd HH:mm:ss")
 
         fun getDisplayString(remainingSeconds: Long): String {

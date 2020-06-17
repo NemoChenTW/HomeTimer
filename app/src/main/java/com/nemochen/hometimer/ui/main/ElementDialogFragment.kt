@@ -1,6 +1,7 @@
 package com.nemochen.hometimer.ui.main
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -42,7 +43,7 @@ class ElementDialogFragment : DialogFragment() {
 
         viewModel.editDateTrigger.observe(viewLifecycleOwner, Observer {
             context?.apply {
-                if (it != null) {
+                it?.let {
                     val calendar = Calendar.getInstance()
                     DatePickerDialog(this,
                         DatePickerDialog.OnDateSetListener {
@@ -54,6 +55,22 @@ class ElementDialogFragment : DialogFragment() {
                     ).show()
                 }
                 Calendar.YEAR
+            }
+        })
+
+        viewModel.editTimeTrigger.observe(viewLifecycleOwner, Observer {
+            context?.apply {
+                it?.let {
+                    val calendar = Calendar.getInstance()
+                    TimePickerDialog(this,
+                        TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                            binding.time.text = TimeDisplayUtil.timeFormaterWithoutSecond.format(Calendar.getInstance().apply {
+                                set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
+                                    hourOfDay, minute)}.time)
+                        },
+                    calendar.get(Calendar.HOUR_OF_DAY),
+                    calendar.get(Calendar.MINUTE), true).show()
+                }
             }
         })
     }
