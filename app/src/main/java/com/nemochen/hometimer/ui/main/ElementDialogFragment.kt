@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.nemochen.hometimer.databinding.DialogFragmentBinding
+import com.nemochen.hometimer.util.TimeDisplayUtil
 import java.util.*
 
 class ElementDialogFragment : DialogFragment() {
@@ -44,7 +45,9 @@ class ElementDialogFragment : DialogFragment() {
                 if (it != null) {
                     val calendar = Calendar.getInstance()
                     DatePickerDialog(this,
-                        DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth -> binding.date.text = "$year/$month/$dayOfMonth" },
+                        DatePickerDialog.OnDateSetListener {
+                                _, year, month, dayOfMonth -> binding.date.text = TimeDisplayUtil.dataFormater.format(Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time)
+                        },
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)
@@ -52,7 +55,6 @@ class ElementDialogFragment : DialogFragment() {
                 }
                 Calendar.YEAR
             }
-
         })
     }
 }
