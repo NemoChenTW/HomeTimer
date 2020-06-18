@@ -7,7 +7,9 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +27,8 @@ class MainFragment : Fragment() {
     private lateinit var binding: MainFragmentBinding
     private lateinit var viewModel: MainViewModel
     private var countdownElementAdapter = CountdownElementAdapter()
+
+    private val elementDetailViewModel: ElementDetailViewModel by activityViewModels()
 
     private lateinit var itemTouchHelper: ItemTouchHelper
 
@@ -66,7 +70,7 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -79,6 +83,10 @@ class MainFragment : Fragment() {
             Observer {
                 s -> Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
             })
+
+        elementDetailViewModel.changedElement.observe(viewLifecycleOwner, Observer {
+            countdownElementAdapter.addItem(binding.recyclerView, viewModel.itemList.value, viewModel.itemList?.value?.size!!, it)
+        })
     }
 
 }

@@ -88,4 +88,17 @@ class CountdownElementAdapter : ListAdapter<CountdownElement, RecyclerView.ViewH
         }
     }
 
+    fun addItem(recyclerView: RecyclerView, list: MutableList<CountdownElement>?, position: Int, countdownElement: CountdownElement) {
+        list?.let {
+            recyclerView.adapter?.apply {
+                when (this) {
+                    is CountdownElementAdapter -> {
+                        it.add(position, countdownElement)
+                        notifyItemInserted(position)
+                    }
+                }
+            }
+        }
+    }
+
 }

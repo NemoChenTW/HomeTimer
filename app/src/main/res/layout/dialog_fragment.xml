@@ -68,7 +68,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date"
             app:layout_constraintHorizontal_chainStyle="spread"
-            tools:text="Cancel" />
+            tools:text="OK" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnCancel"

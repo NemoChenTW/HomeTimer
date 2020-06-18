@@ -7,21 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.nemochen.hometimer.databinding.DialogFragmentBinding
+import com.nemochen.hometimer.model.CountdownElement
 import com.nemochen.hometimer.util.TimeDisplayUtil
 import java.util.*
 
 class ElementDialogFragment : DialogFragment() {
 
     companion object {
-        val TAG = "ElementDialogFragment"
-        fun newInstance() = ElementDialogFragment()
+        const val TAG = "ElementDialogFragment"
     }
 
     private lateinit var binding: DialogFragmentBinding
     private lateinit var viewModel: ElementDialogViewModel
+    private val elementDetailViewModel: ElementDetailViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +32,19 @@ class ElementDialogFragment : DialogFragment() {
     ): View? {
 
         binding = DialogFragmentBinding.inflate(inflater, container, false)
+
+        binding.btnOk.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                elementDetailViewModel.modify(CountdownElement(binding.name.text.toString(), binding.viewModel?.getTimeInMillis()?.value!!))
+                this@ElementDialogFragment.dismiss()
+            }
+        })
+
+        binding.btnCancel.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                this@ElementDialogFragment.dismiss()
+            }
+        })
 
         return binding.root
     }
