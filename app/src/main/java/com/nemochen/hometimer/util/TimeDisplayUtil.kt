@@ -12,7 +12,7 @@ class TimeDisplayUtil {
         val dataFormater = SimpleDateFormat("yyyy/MM/dd")
         val timeFormater = SimpleDateFormat("HH:mm:ss")
         val timeFormaterWithoutSecond = SimpleDateFormat("HH:mm")
-        val dataTimeFormater = SimpleDateFormat("yyyy/mm/dd HH:mm:ss")
+        val dataTimeFormater = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
 
         fun getDisplayString(remainingSeconds: Long): String {
             var rDays = if (remainingSeconds >= DAY_SECONDS) {remainingSeconds / DAY_SECONDS} else null

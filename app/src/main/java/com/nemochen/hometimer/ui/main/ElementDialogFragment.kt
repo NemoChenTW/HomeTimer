@@ -34,12 +34,17 @@ class ElementDialogFragment : DialogFragment() {
         return binding.root
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this)[ElementDialogViewModel::class.java]
         binding.viewModel = viewModel
 
+        viewModel.getTimeInMillis().observe(viewLifecycleOwner, Observer {
+            context?.apply {
+                binding.date.text = TimeDisplayUtil.dataFormater.format(binding.viewModel?.calendar?.value?.time)
+                binding.time.text = TimeDisplayUtil.timeFormaterWithoutSecond.format(binding.viewModel?.calendar?.value?.time)
+            }
+        })
 
         viewModel.editDateTrigger.observe(viewLifecycleOwner, Observer {
             context?.apply {
@@ -47,14 +52,14 @@ class ElementDialogFragment : DialogFragment() {
                     val calendar = Calendar.getInstance()
                     DatePickerDialog(this,
                         DatePickerDialog.OnDateSetListener {
-                                _, year, month, dayOfMonth -> binding.date.text = TimeDisplayUtil.dataFormater.format(Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time)
+                                _, year, month, dayOfMonth -> binding.viewModel?.calendar?.value?.set(year, month, dayOfMonth)
+                            binding?.viewModel?.updateTimeInMillis()
                         },
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)
                     ).show()
                 }
-                Calendar.YEAR
             }
         })
 
@@ -64,14 +69,16 @@ class ElementDialogFragment : DialogFragment() {
                     val calendar = Calendar.getInstance()
                     TimePickerDialog(this,
                         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                            binding.time.text = TimeDisplayUtil.timeFormaterWithoutSecond.format(Calendar.getInstance().apply {
-                                set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                                    hourOfDay, minute)}.time)
+                            binding.viewModel?.calendar?.value?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                            binding.viewModel?.calendar?.value?.set(Calendar.MINUTE, minute)
+                            binding.viewModel?.updateTimeInMillis()
                         },
                     calendar.get(Calendar.HOUR_OF_DAY),
                     calendar.get(Calendar.MINUTE), true).show()
                 }
             }
         })
+
+        binding.viewModel?.initCalendar()
     }
 }
