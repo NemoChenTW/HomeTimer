@@ -1,12 +1,10 @@
 package com.nemochen.hometimer.util
 
 import java.text.SimpleDateFormat
+import java.util.concurrent.TimeUnit
 
 class TimeDisplayUtil {
     companion object {
-        const val MINUTE_SECONDS = 60
-        const val HOUR_SECONDS = MINUTE_SECONDS * 60
-        const val DAY_SECONDS = HOUR_SECONDS * 24
         const val PADDING_CHAR = '0'
 
         val dataFormater = SimpleDateFormat("yyyy/MM/dd")
@@ -15,17 +13,13 @@ class TimeDisplayUtil {
         val dataTimeFormater = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
 
         fun getDisplayString(remainingSeconds: Long): String {
-            var rDays = if (remainingSeconds >= DAY_SECONDS) {remainingSeconds / DAY_SECONDS} else null
-            var rHours = if (rDays != null) {
-                ((remainingSeconds % DAY_SECONDS) / HOUR_SECONDS).toString().padStart(2, PADDING_CHAR)
-            } else {
-                (remainingSeconds / HOUR_SECONDS).toString().padStart(2, PADDING_CHAR)
-            }
-            var rMinutes = ((remainingSeconds % HOUR_SECONDS) / MINUTE_SECONDS).toString().padStart(2, PADDING_CHAR)
-            var rSeconds = (remainingSeconds % MINUTE_SECONDS).toString().padStart(2, PADDING_CHAR)
+            var rDays = TimeUnit.SECONDS.toDays(remainingSeconds)
+            var rHours = TimeUnit.SECONDS.toHours(remainingSeconds % TimeUnit.DAYS.toSeconds(1)).toString().padStart(2, PADDING_CHAR)
+            var rMinutes = TimeUnit.SECONDS.toMinutes(remainingSeconds % TimeUnit.HOURS.toSeconds(1)).toString().padStart(2, PADDING_CHAR)
+            var rSeconds = TimeUnit.SECONDS.toSeconds(remainingSeconds % TimeUnit.MINUTES.toSeconds(1)).toString().padStart(2, PADDING_CHAR)
 
             var displayString = "$rHours:$rMinutes:$rSeconds"
-            if (rDays != null) {
+            if (rDays != null && rDays != 0L) {
                 displayString = "$rDays Days, $displayString"
             }
             return displayString
