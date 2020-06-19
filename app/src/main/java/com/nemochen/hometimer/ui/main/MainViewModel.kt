@@ -1,6 +1,5 @@
 package com.nemochen.hometimer.ui.main
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nemochen.hometimer.model.CountdownElement
