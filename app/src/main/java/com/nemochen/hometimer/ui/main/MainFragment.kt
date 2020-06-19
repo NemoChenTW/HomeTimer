@@ -84,7 +84,7 @@ class MainFragment : Fragment() {
             })
 
         elementDetailViewModel.changedElement.observe(viewLifecycleOwner, Observer {
-            countdownElementAdapter.addItem(binding.recyclerView, viewModel.itemList.value, viewModel.itemList?.value?.size!!, it)
+            countdownElementAdapter.addItem(binding.recyclerView, viewModel.itemList.value, viewModel.itemList.value?.size!!, it)
         })
     }
 

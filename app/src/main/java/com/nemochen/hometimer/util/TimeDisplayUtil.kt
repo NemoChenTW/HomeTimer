@@ -19,7 +19,7 @@ class TimeDisplayUtil {
             var rSeconds = TimeUnit.SECONDS.toSeconds(remainingSeconds % TimeUnit.MINUTES.toSeconds(1)).toString().padStart(2, PADDING_CHAR)
 
             var displayString = "$rHours:$rMinutes:$rSeconds"
-            if (rDays != null && rDays != 0L) {
+            if (rDays != 0L) {
                 displayString = "$rDays Days, $displayString"
             }
             return displayString

@@ -68,7 +68,7 @@ class ElementDialogFragment : DialogFragment() {
                     DatePickerDialog(this,
                         DatePickerDialog.OnDateSetListener {
                                 _, year, month, dayOfMonth -> binding.viewModel?.calendar?.value?.set(year, month, dayOfMonth)
-                            binding?.viewModel?.updateTimeInMillis()
+                            binding.viewModel?.updateTimeInMillis()
                         },
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
